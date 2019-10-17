@@ -1,0 +1,19 @@
+mat-card {
+    width: auto;
+    min-width: 320px;
+}
+
+mat-card:hover {
+    cursor: pointer;
+    background-color: rgb(239, 253, 255);
+}
+
+.subs {
+    margin-top: 5px;
+    font-size: 12px;
+    color: rgb(177, 177, 177);
+}
+
+.title {
+    font-size: 16px;
+}

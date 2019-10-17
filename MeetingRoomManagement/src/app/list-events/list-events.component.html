@@ -1,11 +1,11 @@
 <mat-card fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="40px" >
   <div fxLayout="column" fxLayoutAlign="center start">
-    <span>Event ID: {{evnt?.id}}</span>
-    <span>{{formatDateTime(evnt?.start.dateTime) | date:'MMMM dd, yyyy HH:mm'}} to
+    <span class="title">Event ID: {{evnt?.id}}</span>
+    <span class="subs">{{formatDateTime(evnt?.start.dateTime) | date:'MMMM dd, yyyy HH:mm'}} to
       {{formatDateTime(evnt?.end.dateTime) | date:'MMMM dd, yyyy HH:mm'}}</span>
   </div>
-  <div fxLayout="row" fxLayoutAlign="center-around center" fxLayoutGap="10px">
+  <!-- <div fxLayout="row" fxLayoutAlign="center-around center" fxLayoutGap="10px">
       <button mat-raised-button color="accent">Edit</button>
       <button mat-raised-button color="warn">Delete</button>
-  </div>
+  </div> -->
 </mat-card>
