@@ -1,0 +1,15 @@
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+    <span>Booking System</span>
+    <button mat-raised-button color="primary">Book an event</button>
+</mat-toolbar>
+<br>
+<br>
+<div *ngIf="isLoaded" fxLayout="column" fxLayoutAlign="space-around center" fxLayoutGap="10px">
+    <span>Upcoming Events</span>
+    <div fxLayout="column" fxLayoutAlign="start center" *ngFor="let evnt of eventList">
+        <app-list-events [evnt]="evnt"></app-list-events>
+    </div>
+</div>
+
+
+<router-outlet></router-outlet>
