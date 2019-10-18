@@ -1,0 +1,81 @@
+<div>
+
+  <h4>
+    {{headerMsg}}
+  </h4>
+
+  <h6 class="errorMsg" *ngIf="hasConflicts">
+    Schedule has existing conflict, please change your schedule.
+  </h6>
+
+  <form [formGroup]="editEventFormGroup" (ngSubmit)="sendEdit(editEventFormGroup.getRawValue())" fxLayout="column"
+    fxLayoutAlign="space-around center">
+
+    <div>
+
+      <mat-form-field class="dateInput">
+        <mat-label for="startDate">Start Date</mat-label>
+        <input matInput [min]="minDate" [matDatepicker]="dp3" required formControlName="startDate" disabled="true"
+          (dateChange)="changedStart($event)">
+        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="timeInput">
+        <mat-label for="startHour">Hour</mat-label>
+        <mat-select formControlName="startHour" (selectionChange)="changedStart($event)">
+          <mat-option *ngFor="let hr of hourList" [value]=hr>
+            {{hr}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="timeInput">
+        <mat-label for="startMin">Minute</mat-label>
+        <mat-select formControlName="startMin" (selectionChange)="changedStart($event)">
+          <mat-option value='00'>00</mat-option>
+          <mat-option value='30'>30</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <div>
+
+      <mat-form-field class="dateInput">
+        <mat-label for="endDate">End Date</mat-label>
+        <input matInput [min]="minDateEnd" [matDatepicker]="dp4" required formControlName="endDate"
+          (dateChange)="changedStart($event)">
+        <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
+        <mat-datepicker #dp4 [disabled]="!enableEndDate"></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="timeInput">
+        <mat-label for="endHour">Hour</mat-label>
+        <mat-select formControlName="endHour" (selectionChange)="changedStart($event)">
+          <mat-option *ngFor="let hr of hourList" [value]=hr>
+            {{hr}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="timeInput">
+        <mat-label for="endMin">Minute</mat-label>
+        <mat-select formControlName="endMin" (selectionChange)="changedStart($event)">
+          <mat-option value='00'>00</mat-option>
+          <mat-option value='30'>30</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <!-- <button type="submit" color="primary" mat-raised-button>Save</button> -->
+    <div class="listBtnHolder" *ngIf="data.origin === 'list'" fxLayout="row" fxLayoutAlign="space-between stretch">
+      <button type="submit" [disabled]=editEventFormGroup.invalid color="primary" mat-raised-button>Edit</button>
+      <button type="button" color="warn" mat-raised-button>Delete</button>
+    </div>
+
+    <button *ngIf="data.origin === 'create'" type="submit" [disabled]=editEventFormGroup.invalid color="primary"
+      mat-raised-button>Create</button>
+  </form>
+</div>

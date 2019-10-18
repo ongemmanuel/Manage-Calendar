@@ -7,20 +7,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ListEventsComponent } from './list-events/list-events.component';
 import { AppMaterialModule } from './app-material.module';
+import { BookFormComponent } from './book-form/book-form.component';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ListEventsComponent
+    ListEventsComponent,
+    BookFormComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppMaterialModule
+    AppMaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [BookFormComponent]
 })
 export class AppModule { }

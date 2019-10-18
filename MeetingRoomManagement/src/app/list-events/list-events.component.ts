@@ -1,4 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
+import { BookFormComponent } from '../book-form/book-form.component';
+
 
 @Component({
   selector: 'app-list-events',
@@ -6,8 +9,13 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./list-events.component.css']
 })
 export class ListEventsComponent implements OnInit {
+  @ViewChild(BookFormComponent, {})
+  private bookForm: BookFormComponent;
   @Input() evnt: any;
-  constructor() { }
+  @Input() evntList: any;
+  constructor(
+    private bookDialog: MatDialog,
+  ) { }
 
   ngOnInit() {
   }
@@ -18,5 +26,15 @@ export class ListEventsComponent implements OnInit {
     return parseDate;
   }
 
-
+  openDialog(ev) {
+    const editBookConfig = new MatDialogConfig();
+    editBookConfig.disableClose = false;
+    editBookConfig.autoFocus = false;
+    editBookConfig.data = {
+      content: this.evntList,
+      selected: this.evnt,
+      origin: 'list'
+    };
+    const editBookDialog = this.bookDialog.open(BookFormComponent, editBookConfig);
+  }
 }

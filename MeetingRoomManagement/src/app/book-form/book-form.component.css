@@ -1,0 +1,21 @@
+.timeInput{
+    width: 80px;
+    margin: 5px;
+}
+
+.dateInput {
+    width: 120px;
+    margin: 5px;
+}
+
+.errorMsg{
+    color: red;
+}
+
+.showError{
+    visibility: visible;
+}
+
+.listBtnHolder{
+    width: 100%;
+}
