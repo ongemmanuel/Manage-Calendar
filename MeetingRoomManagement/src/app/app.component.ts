@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
 
    addEvent() {
     const editBookConfig = new MatDialogConfig();
-    editBookConfig.disableClose = false;
+    editBookConfig.disableClose = true;
     editBookConfig.autoFocus = false;
     editBookConfig.data = {
       origin : 'create',

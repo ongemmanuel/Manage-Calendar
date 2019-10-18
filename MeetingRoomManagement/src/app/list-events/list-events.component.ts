@@ -28,7 +28,7 @@ export class ListEventsComponent implements OnInit {
 
   openDialog(ev) {
     const editBookConfig = new MatDialogConfig();
-    editBookConfig.disableClose = false;
+    editBookConfig.disableClose = true;
     editBookConfig.autoFocus = false;
     editBookConfig.data = {
       content: this.evntList,

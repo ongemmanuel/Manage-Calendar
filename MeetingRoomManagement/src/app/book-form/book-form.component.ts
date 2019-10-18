@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatDatepicker, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AccessCalendarService } from '../access-calendar.service';
+import {MatIconRegistry} from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-book-form',
@@ -24,15 +26,33 @@ export class BookFormComponent implements OnInit {
     private dialogRef: MatDialogRef<BookFormComponent>,
     public dialog: MatDialog,
     private fb: FormBuilder,
-    private accessCalendarService: AccessCalendarService
+    private accessCalendarService: AccessCalendarService,
+    private sb: MatSnackBar,
   ) { }
 
 
   ngOnInit() {
     if(this.data.origin === 'create') {
       this.headerMsg = 'Create Event'
+      this.editEventFormGroup = this.fb.group({
+        startDate: new FormControl({ value: '', disabled: true }, Validators.required),
+        startHour: new FormControl({ value: '', disabled: false }, Validators.required),
+        startMin: new FormControl({ value: '', disabled: false }, Validators.required),
+        endDate: new FormControl({ value: '', disabled: true }, Validators.required),
+        endHour: new FormControl({ value: '', disabled: false }, Validators.required),
+        endMin: new FormControl({ value: '', disabled: false }, Validators.required),
+      });
     } else {
       this.headerMsg = 'Edit Event: ' + this.data.selected.id
+      console.log(this.data.selected)
+      this.editEventFormGroup = this.fb.group({
+        startDate: new FormControl({ value: this.getDate(this.data.selected.start.dateTime), disabled: true }, Validators.required),
+        startHour: new FormControl({ value: this.getHrs(this.data.selected.start.dateTime), disabled: false }, Validators.required),
+        startMin: new FormControl({ value: this.getMins(this.data.selected.start.dateTime), disabled: false }, Validators.required),
+        endDate: new FormControl({ value: this.getDate(this.data.selected.end.dateTime), disabled: true }, Validators.required),
+        endHour: new FormControl({ value: this.getHrs(this.data.selected.end.dateTime), disabled: false }, Validators.required),
+        endMin: new FormControl({ value: this.getMins(this.data.selected.end.dateTime), disabled: false }, Validators.required),
+      });
     }
     for (let i = 0; i <= 23; i++) {
       if (i < 10) {
@@ -42,19 +62,37 @@ export class BookFormComponent implements OnInit {
         this.hourList.push(JSON.stringify(i));
       }
     }
-
-    this.editEventFormGroup = this.fb.group({
-      startDate: new FormControl({ value: '', disabled: true }, Validators.required),
-      startHour: new FormControl({ value: '', disabled: false }, Validators.required),
-      startMin: new FormControl({ value: '', disabled: false }, Validators.required),
-      endDate: new FormControl({ value: '', disabled: true }, Validators.required),
-      endHour: new FormControl({ value: '', disabled: false }, Validators.required),
-      endMin: new FormControl({ value: '', disabled: false }, Validators.required),
-    });
+    console.log(this.editEventFormGroup)
   }
 
-  sendEdit(val) {
+  getDate(date){
+    return new Date(date);
+  }
+
+  getHrs(date) {
+    console.log(new Date(date).getHours());
+    let patchHr = new Date(date).getHours();
+    if(patchHr < 10) {
+      return '0' + JSON.stringify(patchHr);
+    } else {
+      return JSON.stringify(patchHr);
+    }
+  }
+
+  getMins(date) {
+    console.log(new Date(date).getMinutes());
+    let patchMin = new Date(date).getMinutes();
+    if(patchMin === 0) {
+      return '00';
+    } else {
+      return '30';
+    }
+  }
+
+  submitVals(val) {
     this.hasConflicts = false;
+    console.log(val)
+    // console.log(this.data.selected.start.dateTime);
     let startDateString = JSON.stringify(val.startDate.getFullYear()) + '-' + JSON.stringify((val.startDate.getMonth() + 1)) + '-' + JSON.stringify((val.startDate.getDate()))
       + 'T' + val.startHour + ':' + val.startMin + ':00+08:00';
     let endDateString = JSON.stringify(val.endDate.getFullYear()) + '-' + JSON.stringify((val.endDate.getMonth() + 1)) + '-' + JSON.stringify((val.endDate.getDate()))
@@ -79,8 +117,11 @@ export class BookFormComponent implements OnInit {
       } else {
         this.hasConflicts = false;
         //PROCEED TO BACKEND CALL
+        this.closeDialog();
+        this.openSnackBar('Event was successfully added.', 'CLOSE');
       }
     } else if (this.data.origin === 'list') {
+      console.log();
       for (let datum of this.data.content) {
         const startEvent = Date.parse(datum.start.dateTime);
         const endEvent = Date.parse(datum.end.dateTime);
@@ -95,6 +136,8 @@ export class BookFormComponent implements OnInit {
       } else {
         this.hasConflicts = false;
         //PROCEED TO BACKEND CALL
+        this.closeDialog();
+        this.openSnackBar('EventId ' + this.data.selected.id + ' was successfully added.', 'CLOSE');
       }
     }
   }
@@ -102,6 +145,16 @@ export class BookFormComponent implements OnInit {
   changedStart(e) {
     this.hasConflicts = false;
     this.enableEndDate = true;
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.sb.open(message, action , {
+      panelClass: ['snackbar-design-global']
+    });
   }
 
 

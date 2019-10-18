@@ -1,14 +1,19 @@
 <div>
 
-  <h4>
-    {{headerMsg}}
-  </h4>
+    <div fxLayout="row" fxLayoutAlign="space-between center" >
+    <h5>
+      {{headerMsg}}
+    </h5>
+    <h5 class="errorMsg" *ngIf="hasConflicts">
+      Schedule has existing conflict, please change your schedule.
+    </h5>
+    <button mat-icon-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+      </button>
+  </div>
 
-  <h6 class="errorMsg" *ngIf="hasConflicts">
-    Schedule has existing conflict, please change your schedule.
-  </h6>
 
-  <form [formGroup]="editEventFormGroup" (ngSubmit)="sendEdit(editEventFormGroup.getRawValue())" fxLayout="column"
+  <form [formGroup]="editEventFormGroup" (ngSubmit)="submitVals(editEventFormGroup.getRawValue())" fxLayout="column"
     fxLayoutAlign="space-around center">
 
     <div>
@@ -47,7 +52,7 @@
         <input matInput [min]="minDateEnd" [matDatepicker]="dp4" required formControlName="endDate"
           (dateChange)="changedStart($event)">
         <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
-        <mat-datepicker #dp4 [disabled]="!enableEndDate"></mat-datepicker>
+        <mat-datepicker #dp4 [disabled]="false"></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="timeInput">
@@ -71,7 +76,8 @@
 
     <!-- <button type="submit" color="primary" mat-raised-button>Save</button> -->
     <div class="listBtnHolder" *ngIf="data.origin === 'list'" fxLayout="row" fxLayoutAlign="space-between stretch">
-      <button type="submit" [disabled]=editEventFormGroup.invalid color="primary" mat-raised-button>Edit</button>
+      <button type="submit" [disabled]="editEventFormGroup.invalid || editEventFormGroup.pristine" color="primary"
+        mat-raised-button>Update</button>
       <button type="button" color="warn" mat-raised-button>Delete</button>
     </div>
 
