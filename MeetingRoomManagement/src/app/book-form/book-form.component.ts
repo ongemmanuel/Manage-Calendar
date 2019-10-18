@@ -117,6 +117,19 @@ export class BookFormComponent implements OnInit {
       } else {
         this.hasConflicts = false;
         //PROCEED TO BACKEND CALL
+        // const dataBody = {
+        //   "end": {
+        //     "dateTime": endDateString
+        //   },
+        //   "start": {
+        //     "dateTime": startDateString
+        //   }
+        // }
+        // this.accessCalendarService.createEvent(dataBody).subscribe(resp => {
+        //   this.closeDialog();
+        //   this.openSnackBar('EventId was successfully added.', 'CLOSE');
+        // }, error => {
+        // })
         this.closeDialog();
         this.openSnackBar('Event was successfully added.', 'CLOSE');
       }
@@ -136,6 +149,20 @@ export class BookFormComponent implements OnInit {
       } else {
         this.hasConflicts = false;
         //PROCEED TO BACKEND CALL
+        // const dataBody = {
+        //   "end": {
+        //     "dateTime": endDateString
+        //   },
+        //   "start": {
+        //     "dateTime": startDateString
+        //   }
+        // }
+        // this.accessCalendarService.updateEvent(this.data.selected.id, dataBody).subscribe(resp => {
+        //   this.closeDialog();
+        //   this.openSnackBar('EventId ' + this.data.selected.id + ' was successfully added.', 'CLOSE');
+        // }, error => {
+
+        // })
         this.closeDialog();
         this.openSnackBar('EventId ' + this.data.selected.id + ' was successfully added.', 'CLOSE');
       }
