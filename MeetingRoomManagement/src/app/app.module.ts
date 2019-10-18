@@ -9,12 +9,14 @@ import { ListEventsComponent } from './list-events/list-events.component';
 import { AppMaterialModule } from './app-material.module';
 import { BookFormComponent } from './book-form/book-form.component';
 import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
+import { NotifyUserComponent } from './notify-user/notify-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListEventsComponent,
-    BookFormComponent
+    BookFormComponent,
+    NotifyUserComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +29,6 @@ import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [BookFormComponent]
+  entryComponents: [BookFormComponent, NotifyUserComponent]
 })
 export class AppModule { }

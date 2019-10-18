@@ -78,7 +78,7 @@
     <div class="listBtnHolder" *ngIf="data.origin === 'list'" fxLayout="row" fxLayoutAlign="space-between stretch">
       <button type="submit" [disabled]="editEventFormGroup.invalid || editEventFormGroup.pristine" color="primary"
         mat-raised-button>Update</button>
-      <button type="button" color="warn" mat-raised-button>Delete</button>
+      <button type="button" color="warn" mat-raised-button (click)="deleteEvent()">Delete</button>
     </div>
 
     <button *ngIf="data.origin === 'create'" type="submit" [disabled]=editEventFormGroup.invalid color="primary"

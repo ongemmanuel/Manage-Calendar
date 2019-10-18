@@ -1,0 +1,7 @@
+.btnHolder{
+    width: 100%;
+}
+
+button{
+    min-width: 84px;
+}

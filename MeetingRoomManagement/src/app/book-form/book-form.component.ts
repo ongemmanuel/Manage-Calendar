@@ -1,10 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig } from '@angular/material/dialog';
 import { MatDatepicker, MatSelect } from '@angular/material';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray, AbstractControl, ValidatorFn } from '@angular/forms';
 import { AccessCalendarService } from '../access-calendar.service';
-import {MatIconRegistry} from '@angular/material/icon';
+import { MatIconRegistry } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotifyUserComponent } from '../notify-user/notify-user.component';
+
 
 @Component({
   selector: 'app-book-form',
@@ -24,15 +26,15 @@ export class BookFormComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<BookFormComponent>,
-    public dialog: MatDialog,
     private fb: FormBuilder,
     private accessCalendarService: AccessCalendarService,
     private sb: MatSnackBar,
+    private notifyDialog: MatDialog
   ) { }
 
 
   ngOnInit() {
-    if(this.data.origin === 'create') {
+    if (this.data.origin === 'create') {
       this.headerMsg = 'Create Event'
       this.editEventFormGroup = this.fb.group({
         startDate: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -65,14 +67,14 @@ export class BookFormComponent implements OnInit {
     console.log(this.editEventFormGroup)
   }
 
-  getDate(date){
+  getDate(date) {
     return new Date(date);
   }
 
   getHrs(date) {
     console.log(new Date(date).getHours());
     let patchHr = new Date(date).getHours();
-    if(patchHr < 10) {
+    if (patchHr < 10) {
       return '0' + JSON.stringify(patchHr);
     } else {
       return JSON.stringify(patchHr);
@@ -82,7 +84,7 @@ export class BookFormComponent implements OnInit {
   getMins(date) {
     console.log(new Date(date).getMinutes());
     let patchMin = new Date(date).getMinutes();
-    if(patchMin === 0) {
+    if (patchMin === 0) {
       return '00';
     } else {
       return '30';
@@ -179,10 +181,38 @@ export class BookFormComponent implements OnInit {
   }
 
   openSnackBar(message: string, action: string) {
-    this.sb.open(message, action , {
+    this.sb.open(message, action, {
       panelClass: ['snackbar-design-global']
     });
   }
+
+  deleteEvent() {
+    const editNotifyConfig = new MatDialogConfig();
+    editNotifyConfig.disableClose = true;
+    editNotifyConfig.autoFocus = false;
+    editNotifyConfig.data = {
+      message: 'Do you want to proceed deleting the event?',
+      id: this.data.selected.id
+    }
+    const notificationDialog = this.notifyDialog.open(NotifyUserComponent, editNotifyConfig);
+
+
+    notificationDialog.beforeClosed().subscribe(resp => {
+      if (resp) {
+        //PROCEED TO BACKEND CALL
+        // this.accessCalendarService.deleteEvent(this.data.selected.id).subscribe(resp => {
+        //   this.closeDialog();
+        // }, error => {
+        // })
+        this.closeDialog();
+        this.openSnackBar('EventId ' + this.data.selected.id + ' was successfully deleted.', 'CLOSE');
+      }
+    });
+
+
+
+  }
+
 
 
 }
